@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills Assessment Radar Chart</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .input-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 5px;
+            font-size: 0.95em;
+        }
+
+        .input-group .description {
+            font-size: 0.85em;
+            color: #777;
+            margin-bottom: 10px;
+        }
+
+        .score-input {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            height: 6px;
+            border-radius: 3px;
+            outline: none;
+            background: #ddd;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            border: none;
+        }
+
+        .score-display {
+            min-width: 30px;
+            text-align: center;
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        .chart-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #radarChart {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+        }
+
+        .legend {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #666;
+            text-align: center;
+        }
+
+        .update-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .update-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+            margin-left: 10px;
+            transition: opacity 0.3s;
+        }
+
+        .footer a:hover {
+            opacity: 0.7;
+        }
+
+        .github-icon {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+            margin-left: 8px;
+        }
+
+        .footer-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Skills Assessment Radar Chart</h1>
+
+        <div class="main-content">
+            <div class="input-section">
+                <div class="input-group">
+                    <label>Math & Logical Reasoning</label>
+                    <div class="description">Mathematical thinking and logical problem solving</div>
+                    <div class="score-input">
+                        <input type="range" id="math" min="0" max="10" value="0">
+                        <span class="score-display" id="math-score">0</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Sciences</label>
+                    <div class="description">Biology, Chemistry, Physics, Scientific Reasoning</div>
+                    <div class="score-input">
+                        <input type="range" id="science" min="0" max="10" value="0">
+                        <span class="score-display" id="science-score">0</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Cultural & Language</label>
+                    <div class="description">Cultural Awareness, Foreign Language</div>
+                    <div class="score-input">
+                        <input type="range" id="cultural" min="0" max="10" value="0">
+                        <span class="score-display" id="cultural-score">0</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Arts</label>
+                    <div class="description">Art & Music Appreciation, History, Skills</div>
+                    <div class="score-input">
+                        <input type="range" id="arts" min="0" max="10" value="0">
+                        <span class="score-display" id="arts-score">0</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Language Arts</label>
+                    <div class="description">Literature, Reading & Writing, Literary Analysis, Media Literacy, Debate, Rhetoric</div>
+                    <div class="score-input">
+                        <input type="range" id="language" min="0" max="10" value="0">
+                        <span class="score-display" id="language-score">0</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>History & Government</label>
+                    <div class="description">Historical Reasoning, Global History, Civilizations, Intellectual Movements</div>
+                    <div class="score-input">
+                        <input type="range" id="history" min="0" max="10" value="0">
+                        <span class="score-display" id="history-score">0</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Social Sciences</label>
+                    <div class="description">Psychology, Economics, Sociology, Anthropology, Financial Literacy</div>
+                    <div class="score-input">
+                        <input type="range" id="social" min="0" max="10" value="0">
+                        <span class="score-display" id="social-score">0</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Health & Wellness</label>
+                    <div class="description">Health, Wellness, Nutrition, Human Anatomy</div>
+                    <div class="score-input">
+                        <input type="range" id="health" min="0" max="10" value="0">
+                        <span class="score-display" id="health-score">0</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Philosophy & Ethics</label>
+                    <div class="description">Moral Reasoning, Philosophy, Ethics</div>
+                    <div class="score-input">
+                        <input type="range" id="philosophy" min="0" max="10" value="0">
+                        <span class="score-display" id="philosophy-score">0</span>
+                    </div>
+                </div>
+
+                <button class="update-btn" onclick="updateChart()">Update Chart</button>
+            </div>
+
+            <div class="chart-section">
+                <svg id="radarChart" viewBox="0 0 500 500">
+                    <!-- Chart will be drawn here -->
+                </svg>
+                <div class="legend">
+                    <p>Each axis represents a skill category (1-10 scale)</p>
+                    <p>The colored area shows your current skill profile</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-content">
+                <span>viethaa</span>
+                <a href="https://github.com/viethaa/skills_assesment_radar" target="_blank" rel="noopener noreferrer">
+                    <svg class="github-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const categories = [
+            { id: 'math', label: 'Math & Logic' },
+            { id: 'science', label: 'Sciences' },
+            { id: 'cultural', label: 'Cultural' },
+            { id: 'arts', label: 'Arts' },
+            { id: 'language', label: 'Language Arts' },
+            { id: 'history', label: 'History' },
+            { id: 'social', label: 'Social Sciences' },
+            { id: 'health', label: 'Health' },
+            { id: 'philosophy', label: 'Philosophy' }
+        ];
+
+        const centerX = 250;
+        const centerY = 250;
+        const radius = 180;
+        const levels = 10;
+
+        // Update score display when slider changes
+        categories.forEach(cat => {
+            const slider = document.getElementById(cat.id);
+            const display = document.getElementById(cat.id + '-score');
+
+            slider.addEventListener('input', function() {
+                display.textContent = this.value;
+                updateChart();
+            });
+        });
+
+        function drawRadarChart() {
+            const svg = document.getElementById('radarChart');
+            svg.innerHTML = '';
+
+            const angleStep = (Math.PI * 2) / categories.length;
+
+            // Draw background circles
+            for (let level = 1; level <= levels; level++) {
+                const levelRadius = (radius / levels) * level;
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', centerX);
+                circle.setAttribute('cy', centerY);
+                circle.setAttribute('r', levelRadius);
+                circle.setAttribute('fill', 'none');
+                circle.setAttribute('stroke', '#e0e0e0');
+                circle.setAttribute('stroke-width', '1');
+                svg.appendChild(circle);
+
+                // Add level labels
+                if (level % 2 === 0) {
+                    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    text.setAttribute('x', centerX + 5);
+                    text.setAttribute('y', centerY - levelRadius + 5);
+                    text.setAttribute('font-size', '10');
+                    text.setAttribute('fill', '#999');
+                    text.textContent = level;
+                    svg.appendChild(text);
+                }
+            }
+
+            // Draw axes and labels
+            categories.forEach((cat, index) => {
+                const angle = angleStep * index - Math.PI / 2;
+                const x = centerX + Math.cos(angle) * radius;
+                const y = centerY + Math.sin(angle) * radius;
+
+                // Draw axis line
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', centerX);
+                line.setAttribute('y1', centerY);
+                line.setAttribute('x2', x);
+                line.setAttribute('y2', y);
+                line.setAttribute('stroke', '#d0d0d0');
+                line.setAttribute('stroke-width', '1');
+                svg.appendChild(line);
+
+                // Add category labels
+                const labelX = centerX + Math.cos(angle) * (radius + 30);
+                const labelY = centerY + Math.sin(angle) * (radius + 30);
+
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', labelX);
+                text.setAttribute('y', labelY);
+                text.setAttribute('font-size', '12');
+                text.setAttribute('fill', '#333');
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('dominant-baseline', 'middle');
+                text.textContent = cat.label;
+                svg.appendChild(text);
+            });
+
+            // Draw data polygon
+            const points = [];
+            categories.forEach((cat, index) => {
+                const value = document.getElementById(cat.id).value;
+                const angle = angleStep * index - Math.PI / 2;
+                const distance = (radius / levels) * value;
+                const x = centerX + Math.cos(angle) * distance;
+                const y = centerY + Math.sin(angle) * distance;
+                points.push(`${x},${y}`);
+            });
+
+            // Create filled polygon
+            const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+            polygon.setAttribute('points', points.join(' '));
+            polygon.setAttribute('fill', 'rgba(102, 126, 234, 0.3)');
+            polygon.setAttribute('stroke', '#667eea');
+            polygon.setAttribute('stroke-width', '2');
+            svg.appendChild(polygon);
+
+            // Draw data points
+            categories.forEach((cat, index) => {
+                const value = document.getElementById(cat.id).value;
+                const angle = angleStep * index - Math.PI / 2;
+                const distance = (radius / levels) * value;
+                const x = centerX + Math.cos(angle) * distance;
+                const y = centerY + Math.sin(angle) * distance;
+
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', x);
+                circle.setAttribute('cy', y);
+                circle.setAttribute('r', '4');
+                circle.setAttribute('fill', '#667eea');
+                svg.appendChild(circle);
+            });
+        }
+
+        function updateChart() {
+            drawRadarChart();
+        }
+
+        // Initial chart draw
+        drawRadarChart();
+    </script>
+</body>
+</html>
